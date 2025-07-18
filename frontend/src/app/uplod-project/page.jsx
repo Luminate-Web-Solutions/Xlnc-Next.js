@@ -1,73 +1,105 @@
 'use client';
+import { useState } from 'react';
+import axios from 'axios';
+import { UploadCloud } from 'lucide-react';
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // ✅ correct for App Router
-import axios from "axios";
+export default function ProjectUpload() {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    category: 'commercial',
+    image: null,
+  });
 
-export default function UploadProject() {
-  const router = useRouter();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === 'image' ? e.target.files[0] : value,
+    }));
+  };
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null);
-  const [message, setMessage] = useState("");
-
-  const handleUpload = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("image", image);
+    const data = new FormData();
+    Object.entries(formData).forEach(([key, value]) => data.append(key, value));
 
     try {
-      await axios.post("http://localhost:4000/api/projects", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      setMessage("✅ Project uploaded successfully!");
-      setTitle("");
-      setDescription("");
-      setImage(null);
-      router.push("/projects"); // redirect after upload
-    } catch (error) {
-      console.error("❌ Upload error:", error);
-      setMessage("❌ Upload failed");
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/projects`, data);
+      alert('Uploaded successfully!');
+    } catch (err) {
+      alert('Upload failed!');
+      console.error(err.response?.data || err);
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto py-10">
-      <h2 className="text-2xl font-semibold mb-4">Upload Project</h2>
-      <form onSubmit={handleUpload} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Project Title"
-          className="w-full border p-2"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder="Description"
-          className="w-full border p-2"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        ></textarea>
-        <input
-          type="file"
-          accept="image/*"
-          className="w-full"
-          onChange={(e) => setImage(e.target.files[0])}
-          required
-        />
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 space-y-6"
+      >
+        <h2 className="text-2xl font-bold text-center text-blue-700">Upload New Project</h2>
+
+        <div>
+          <label className="block mb-1 text-sm font-medium text-gray-700">Project Title</label>
+          <input
+            name="title"
+            placeholder="Enter title"
+            onChange={handleChange}
+            required
+            className="w-full border text-black  border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 text-sm font-medium text-gray-700">Description</label>
+          <textarea
+            name="description"
+            placeholder="Write a short description"
+            onChange={handleChange}
+            required
+            rows={4}
+            className="w-full text-black border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 text-sm font-medium text-gray-700">Category</label>
+          <select
+            name="category"
+            onChange={handleChange}
+            value={formData.category}
+            className="w-full border text-black border-gray-300 rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 tet-black focus:ring-blue-500"
+          >
+            <option value="commercial">Commercial</option>
+            <option value="industrial">Industrial</option>
+            <option value="hospital">Hospital</option>
+            <option value="government">Government</option>
+            <option value="residential">Residential</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block mb-1 text-sm font-medium text-gray-700">Project Image</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleChange}
+            required
+            className="w-full border text-black border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200"
         >
-          Upload
+          <UploadCloud className="w-5 h-5 mr-2" />
+          Upload Project
         </button>
       </form>
-      {message && <p className="mt-4">{message}</p>}
     </div>
   );
 }

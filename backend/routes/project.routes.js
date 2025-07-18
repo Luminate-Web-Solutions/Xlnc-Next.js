@@ -1,9 +1,7 @@
 const express = require("express");
-const multer = require("multer");
-const authenticate = require("../middleware/auth");
-const Project = require("../models/project.model");
-
 const router = express.Router();
+const multer = require("multer");
+const Project = require("../models/project.model");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
@@ -12,21 +10,43 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post("/upload", authenticate, upload.single("image"), async (req, res) => {
-  try {
-    const { title, description } = req.body;
-    const image = req.file?.filename;
+// Upload a new project
+router.post("/", upload.single("image"), async (req, res) => {
+  const { title, description, category } = req.body;
+  const image = req.file?.filename;
 
-    const project = await Project.create({ title, description, image });
-    res.json({ message: "Project uploaded", project });
+  if (!image || !title || !description || !category) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  try {
+    const project = await Project.create({ title, description, category, image });
+    res.status(201).json({ message: "Project uploaded", project });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error(err);
+    res.status(500).json({ message: "Failed to upload project", error: err.message });
   }
 });
 
+// Get all projects
 router.get("/", async (req, res) => {
-  const projects = await Project.findAll();
-  res.json(projects);
+  try {
+    const projects = await Project.findAll();
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch projects", error: err.message });
+  }
+});
+
+// ✅ Filter projects by category
+router.get("/category/:category", async (req, res) => {
+  const { category } = req.params;
+  try {
+    const projects = await Project.findAll({ where: { category } });
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch by category", error: err.message });
+  }
 });
 
 module.exports = router;
