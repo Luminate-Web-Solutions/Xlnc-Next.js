@@ -1,4 +1,3 @@
-// backend/models/project.model.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db.config");
 
@@ -8,7 +7,11 @@ const Project = sequelize.define("Project", {
     allowNull: false,
   },
   description: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT, // Short card description
+    allowNull: false,
+  },
+  popupDesc: {
+    type: DataTypes.TEXT, // Full popup description
     allowNull: false,
   },
   image: {
@@ -16,7 +19,7 @@ const Project = sequelize.define("Project", {
     allowNull: false,
   },
   category: {
-    type: DataTypes.ENUM("commercial", "industrial", "hospital", "government", "residential"),
+    type: DataTypes.STRING,
     allowNull: false,
   },
 });

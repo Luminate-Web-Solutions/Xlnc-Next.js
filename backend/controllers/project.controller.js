@@ -2,16 +2,17 @@ const Project = require("../models/project.model");
 
 exports.uploadProject = async (req, res) => {
   try {
-    const { title, description, category } = req.body;
+    const { title, description, popupDesc, category } = req.body; // ✅ added popupDesc
     const image = req.file?.filename;
 
-    if (!title || !description || !category || !image) {
+    if (!title || !description || !popupDesc || !category || !image) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
     const newProject = await Project.create({
       title,
       description,
+      popupDesc, // ✅ save popupDesc to DB
       category,
       image,
     });

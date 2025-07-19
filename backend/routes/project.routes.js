@@ -12,15 +12,21 @@ const upload = multer({ storage });
 
 // Upload a new project
 router.post("/", upload.single("image"), async (req, res) => {
-  const { title, description, category } = req.body;
+  const { title, description, popupDesc, category } = req.body;
   const image = req.file?.filename;
 
-  if (!image || !title || !description || !category) {
+  if (!title || !description || !popupDesc || !category || !image) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
-    const project = await Project.create({ title, description, category, image });
+    const project = await Project.create({
+      title,
+      description,
+      popupDesc,
+      category,
+      image,
+    });
     res.status(201).json({ message: "Project uploaded", project });
   } catch (err) {
     console.error(err);
@@ -38,7 +44,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ✅ Filter projects by category
+// Filter by category
 router.get("/category/:category", async (req, res) => {
   const { category } = req.params;
   try {

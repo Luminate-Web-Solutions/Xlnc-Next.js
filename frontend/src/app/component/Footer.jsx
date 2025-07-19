@@ -4,10 +4,10 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#7A95B1] text-white px-6 sm:px-16 py-12">
+    <footer className="bg-[#7A95B1] text-white px-6 sm:px-10 py-12">
       {/* Main Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10 text-sm">
-
+        
         {/* Logo */}
         <div className="flex flex-col gap-6">
           <img src="/imgi_1_Final-Logo.png" alt="XLNC Logo" className="h-20 object-contain" />
@@ -53,66 +53,68 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Contact Button */}
-        <div className="flex items-start justify-start md:justify-end">
-  <Link href="/contact">
-    <button
-      className="px-5 py-2 rounded-full font-semibold transition"
-      style={{
-        color: 'black',
-        backgroundColor: '#5C748E',
-      }}
-      onMouseOver={(e) => {
-        e.currentTarget.style.backgroundColor = '#FFFFFF';
-        e.currentTarget.style.color = '#5C748E';
-      }}
-      onMouseOut={(e) => {
-        e.currentTarget.style.backgroundColor = '#5C748E';
-        e.currentTarget.style.color = 'black';
-      }}
-    >
-      Get In Touch
-    </button>
-  </Link>
-</div>
+        {/* Get In Touch Button */}
+        <div className="flex sm:items-start justify-start md:justify-end">
+          <Link href="/contact">
+            <button
+              className="px-5 py-2 rounded-full font-semibold transition"
+              style={{
+                color: 'black',
+                backgroundColor: '#5C748E',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.backgroundColor = '#FFFFFF';
+                e.currentTarget.style.color = '#5C748E';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.backgroundColor = '#5C748E';
+                e.currentTarget.style.color = 'black';
+              }}
+            >
+              Get In Touch
+            </button>
+          </Link>
+        </div>
       </div>
 
-      {/* Divider Section */}
-      <div className="border-t border-white/30 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm gap-6">
-
-        {/* Left Side: Social Icons */}
-        <div className="flex gap-4">
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-            <Facebook className="w-5 h-5 hover:opacity-80" />
-          </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <Instagram className="w-5 h-5 hover:opacity-80" />
-          </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <Linkedin className="w-5 h-5 hover:opacity-80" />
-          </a>
-        </div>
-
-        {/* Center: Contact Info */}
-        <div className="text-center">
-          <a href="tel:+97148249956" className="block hover:underline">(+971) 48-249-956</a>
-          <a href="mailto:info@xlnccontracting.com" className="block hover:underline">info@xlnccontracting.com</a>
-        </div>
-
-        {/* Right Side: Credits */}
-        <div className="text-center md:text-right">
-          <p>© 2010 — xlnccontracting. All Rights Reserved</p>
-          <p>
-            Designed by{' '}
-            <a
-              href="https://luminatewebsol.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline"
-            >
-              Luminate Web Solutions
+      {/* Divider & Bottom Section */}
+      <div className="border-t border-white/30 mt-10 pt-6 text-sm">
+        <div className="flex flex-col gap-6 md:flex-row justify-between items-center max-w-7xl mx-auto px-2">
+          
+          {/* Social Icons */}
+          <div className="flex gap-4">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <Facebook className="w-5 h-5 hover:opacity-80" />
             </a>
-          </p>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <Instagram className="w-5 h-5 hover:opacity-80" />
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <Linkedin className="w-5 h-5 hover:opacity-80" />
+            </a>
+          </div>
+
+          {/* Contact Info */}
+          <div className="text-center">
+            <a href="tel:+97148249956" className="block hover:underline">(+971) 48-249-956</a>
+            <a href="mailto:info@xlnccontracting.com" className="block hover:underline">info@xlnccontracting.com</a>
+          </div>
+
+          {/* Credits */}
+          <div className="text-center md:text-right">
+            <p>© 2010 — xlnccontracting. All Rights Reserved</p>
+            <p>
+              Designed by{' '}
+              <a
+                href="https://luminatewebsol.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                Luminate Web Solutions
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
