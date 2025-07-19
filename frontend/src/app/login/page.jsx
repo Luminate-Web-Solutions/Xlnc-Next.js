@@ -1,7 +1,7 @@
-'use client'; // ✅ Needed for using React hooks in App Router
+'use client';
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // ✅ Use this in App Router
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 export default function Login() {
@@ -13,13 +13,14 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("/api/auth/login", {
+      const res = await axios.post("http://localhost:4000/api/auth/login", {
         email,
         password,
       });
 
       if (res.status === 200) {
-        router.push("/dashboard"); // ✅ Redirect on successful login
+        localStorage.setItem("token", res.data.token); // Save token
+        router.push("/dashboard");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -33,13 +34,13 @@ export default function Login() {
         onSubmit={handleLogin}
         className="bg-white p-8 rounded shadow-md w-80"
       >
-        <h2 className="text-2xl font-bold mb-6">Login</h2>
+        <h2 className="text-2xl font-bold mb-6">Admin Login</h2>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 mb-4 border rounded"
+          className="w-full p-2 mb-4 text-black border rounded"
           required
         />
         <input
@@ -47,7 +48,7 @@ export default function Login() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 mb-4 border rounded"
+          className="w-full p-2 mb-4 text-black border rounded"
           required
         />
         <button
