@@ -21,12 +21,13 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 const authRoutes = require("./routes/auth.routes");
 const projectRoutes = require("./routes/project.routes");
 const contactRoutes = require("./routes/contact.routes");
+const blogRoutes = require("./routes/blog.routes");
 
 // Use Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/contact", contactRoutes);
-
+app.use("/api/blogs", blogRoutes);
 // Environment logging (only in dev mode)
 if (process.env.NODE_ENV !== "production") {
   console.log("🌍 Environment:", process.env.NODE_ENV || "development");

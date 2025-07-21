@@ -3,11 +3,14 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { UploadCloud } from 'lucide-react';
+import { useRouter } from 'next/navigation'; // ✅ Import router
 
 export default function ProjectUpload() {
+  const router = useRouter(); // ✅ Initialize router
+
   const [formData, setFormData] = useState({
     title: '',
-    description: '', // ✅ Correct field name
+    description: '',
     popupDesc: '',
     category: 'commercial',
     image: null,
@@ -29,6 +32,7 @@ export default function ProjectUpload() {
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/projects`, data);
       alert('Uploaded successfully!');
+      router.push('/dashboard'); // ✅ Redirect to dashboard after success
     } catch (err) {
       alert('Upload failed!');
       console.error(err.response?.data || err);
@@ -72,11 +76,11 @@ export default function ProjectUpload() {
           />
         </div>
 
-        {/* Short Description -> description */}
+        {/* Description */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700">Short Description</label>
           <textarea
-            name="description" // ✅ Updated to match backend
+            name="description"
             placeholder="Write a short description"
             onChange={handleChange}
             required
@@ -98,7 +102,7 @@ export default function ProjectUpload() {
           />
         </div>
 
-        {/* Image Upload */}
+        {/* Image */}
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700">Project Image</label>
           <input
