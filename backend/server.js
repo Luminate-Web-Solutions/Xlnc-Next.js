@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 const sequelize = require("./config/db.config");
+const PORT = process.env.PORT || 4000;
 
 // Load environment variables
 dotenv.config();
@@ -53,3 +54,10 @@ sequelize
   .catch((err) => {
     console.error("❌ Failed to sync database:", err.message);
   });
+
+// sequelize.sync({ force: true }) // 💥 This drops and recreates tables
+//   .then(() => {
+//     console.log("✅ Database connected & synced");
+//     app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+//   })
+//   .catch((error) => console.error("❌ DB Sync Error:", error));

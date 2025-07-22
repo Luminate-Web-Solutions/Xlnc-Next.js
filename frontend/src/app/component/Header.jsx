@@ -25,6 +25,8 @@ const Header = () => {
           <Link href="/about-us" className="hover:underline">About Us</Link>
           <Link href="/project" className="hover:underline">Projects</Link>
           <Link href="/service" className="hover:underline">Services</Link>
+                      <Link href="/blogs" onClick={toggleMenu}>Blogs</Link>
+
           <Link href="/contact" className="hover:underline">Contact</Link>
         </nav>
 
@@ -42,6 +44,7 @@ const Header = () => {
             <Link href="/about-us" onClick={toggleMenu}>About Us</Link>
             <Link href="/project" onClick={toggleMenu}>Projects</Link>
             <Link href="/service" onClick={toggleMenu}>Services</Link>
+            <Link href="/blogs" onClick={toggleMenu}>Blogs</Link>
             <Link href="/contact" onClick={toggleMenu}>Contact</Link>
           </nav>
         </div>

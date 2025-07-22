@@ -1,40 +1,39 @@
-import Link from "next/link";
+'use client';
+import { useEffect, useState } from 'react';
+import BlogList from '../component/Bloglist'; // Adjust if needed
 
-export default async function BlogList() {
-  let blogs = [];
+export default function BlogsPage() {
+  const [blogs, setBlogs] = useState([]);
+  const [error, setError] = useState('');
 
-  try {
-    const res = await fetch("http://localhost:4000/api/blogs");
-    const data = await res.json();
-    blogs = Array.isArray(data) ? data : [];
-  } catch (error) {
-    console.error("Failed to fetch blogs:", error);
-  }
+  useEffect(() => {
+    const getBlogs = async () => {
+      try {
+        const res = await fetch('http://localhost:4000/api/blogs');
+        const data = await res.json();
+        setBlogs(data.blogs || []);
+      } catch (err) {
+        setError('Failed to load blogs.');
+        console.error('Fetch error:', err);
+      }
+    };
+
+    getBlogs();
+  }, []);
 
   return (
-    <main className="max-w-3xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">📝 Our Blog Posts</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {blogs.length > 0 ? (
-          blogs.map((b) => (
-            <Link key={b._id} href={`/blogs/${b._id}`}>
-              <a className="block border border-gray-300 rounded-lg overflow-hidden text-black no-underline hover:shadow-md transition-shadow duration-200">
-                {b.imageUrl && (
-                  <img
-                    src={`http://localhost:4000${b.imageUrl}`}
-                    alt={b.title}
-                    className="w-full h-48 object-cover"
-                  />
-                )}
-                <div className="p-4">
-                  <h2 className="text-xl font-semibold mb-2">{b.title}</h2>
-                  <p className="text-gray-700">{b.description.substring(0, 100)}...</p>
-                </div>
-              </a>
-            </Link>
-          ))
+    <main className="min-h-screen bg-white text-black py-12 px-4 md:px-8">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl font-extrabold text-center mb-8 text-[#1E40AF]">
+           Our Latest Blog Posts
+        </h1>
+
+        {error ? (
+          <p className="text-red-500 text-center">{error}</p>
+        ) : blogs.length === 0 ? (
+          <p className="text-gray-500 text-center">No blogs found.</p>
         ) : (
-          <p className="text-center text-gray-500">No blogs available</p>
+          <BlogList blogs={blogs} />
         )}
       </div>
     </main>

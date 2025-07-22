@@ -19,11 +19,11 @@ export default function UploadBlogPage() {
   const categories = ['Technology', 'Architecture', 'Design', 'Tips', 'News'];
 
   const handleChange = (e) => {
-    if (e.target.name === 'image') {
-      setFormData({ ...formData, image: e.target.files[0] });
-    } else {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
+    const { name, value, files } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === 'image' ? files[0] : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -39,7 +39,7 @@ export default function UploadBlogPage() {
 
     try {
       setLoading(true);
-      const res = await axios.post('http://localhost:4000/api/blogs', data, {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/blogs`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
@@ -92,7 +92,7 @@ export default function UploadBlogPage() {
           value={formData.title}
           onChange={handleChange}
           required
-          className="w-full border text-black border border-black rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full border text-black border-black rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
 
         <select
@@ -100,17 +100,18 @@ export default function UploadBlogPage() {
           value={formData.category}
           onChange={handleChange}
           required
-          className="w-full border text-black border border-black rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full border text-black border-black rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           <option value="">Select Category</option>
           {categories.map((cat) => (
-            <option key={cat}>{cat}</option>
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
           ))}
         </select>
 
         <textarea
           name="content"
-        
           placeholder="Write your blog content here..."
           rows={5}
           value={formData.content}
@@ -125,14 +126,15 @@ export default function UploadBlogPage() {
           accept="image/*"
           onChange={handleChange}
           required
-          className="w-full border text-black border border-black rounded px-4 py-3 bg-white"
+          className="w-full border text-black border-black rounded px-4 py-3 bg-white"
         />
 
         <button
           type="submit"
           disabled={loading}
-          className={`w-full flex justify-center items-center gap-2 bg-blue-600 text-white font-semibold px-4 py-3 rounded-lg transition hover:bg-blue-700 ${loading ? 'opacity-70 cursor-not-allowed' : ''
-            }`}
+          className={`w-full flex justify-center items-center gap-2 bg-blue-600 text-white font-semibold px-4 py-3 rounded-lg transition hover:bg-blue-700 ${
+            loading ? 'opacity-70 cursor-not-allowed' : ''
+          }`}
         >
           {loading ? (
             <>
