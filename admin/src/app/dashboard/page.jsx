@@ -112,7 +112,7 @@ export default function Dashboard() {
                     className="w-full h-40 object-cover"
                   />
                   <div className="p-4">
-                    <h3 className="text-lg font-semibold">{title}</h3>
+                    <h3 className="text-lg text-black font-semibold">{title}</h3>
                     <p className="text-sm text-gray-600 mt-1 mb-3 line-clamp-3">{description}</p>
                     <button
                       onClick={() => handleDelete(id)}

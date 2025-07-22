@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Upload, Loader2, Trash2 } from 'lucide-react';
+import AdminHeader from '../componet/Adminheader';
 
 export default function UploadBlogPage() {
   const router = useRouter();
@@ -97,6 +98,8 @@ export default function UploadBlogPage() {
   };
 
   return (
+    <>
+    <AdminHeader title="Upload Blog" />
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-white px-4 py-10">
       <motion.h1
         initial={{ opacity: 0, y: -30 }}
@@ -196,8 +199,8 @@ export default function UploadBlogPage() {
               className="bg-white shadow-md rounded-xl p-6 flex justify-between items-center border border-gray-200"
             >
               <div>
-                <h2 className="text-lg font-semibold">{blog.title}</h2>
-                <p className="text-sm text-gray-500">{blog.category}</p>
+                <h2 className="text-lg text-black font-semibold">{blog.title}</h2>
+                <p className="text-sm text-black">{blog.category}</p>
               </div>
               <button
                 onClick={() => handleDelete(blog.id)}
@@ -213,5 +216,6 @@ export default function UploadBlogPage() {
         )}
       </div>
     </div>
+    </>
   );
 }

@@ -25,7 +25,7 @@ export default function BlogsPage() {
     <main className="min-h-screen bg-white text-black py-12 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-extrabold text-center mb-8 text-[#1E40AF]">
-           Our Latest Blog Posts
+           Our Latest  Posts
         </h1>
 
         {error ? (

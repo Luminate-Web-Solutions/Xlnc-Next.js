@@ -25,7 +25,7 @@ const Header = () => {
           <Link href="/about-us" className="hover:underline">About Us</Link>
           <Link href="/project" className="hover:underline">Projects</Link>
           <Link href="/service" className="hover:underline">Services</Link>
-                      <Link href="/blogs" onClick={toggleMenu}>Blogs</Link>
+                      <Link href="/blogs" onClick={toggleMenu}>Latest Read</Link>
 
           <Link href="/contact" className="hover:underline">Contact</Link>
         </nav>

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const verifyAdmin = require('../middleware/auth.js');
+const verifyAdmin = require('../middleware/auth');
 const BlogController = require('../controllers/blog.controller');
 
 // Multer setup
@@ -11,13 +11,19 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// ADMIN: Create blog
+// ADMIN: Create a blog post
 router.post('/', verifyAdmin, upload.single('image'), BlogController.createBlog);
 
 // PUBLIC: Get all blogs
 router.get('/', BlogController.getAllBlogs);
 
-// PUBLIC: Get single blog by ID
+// PUBLIC: Get a single blog by ID
 router.get('/:id', BlogController.getBlogById);
+
+// ADMIN: Update blog (optional)
+router.put('/:id', verifyAdmin, upload.single('image'), BlogController.updateBlog);
+
+// ADMIN: Delete blog (optional)
+router.delete('/:id', verifyAdmin, BlogController.deleteBlog);
 
 module.exports = router;

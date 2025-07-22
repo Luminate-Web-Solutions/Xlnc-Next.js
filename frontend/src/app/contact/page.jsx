@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import { useForm } from 'react-hook-form';
 import Lottie from 'lottie-react';
@@ -15,7 +15,10 @@ export default function ContactPage() {
     reset,
   } = useForm();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`, {
         method: 'POST',
@@ -27,11 +30,13 @@ export default function ContactPage() {
 
       if (!response.ok) throw new Error('Failed to send');
 
-      alert('✅ Message sent successfully!');
+      alert(' Message sent successfully!');
       reset();
     } catch (error) {
       console.error(error);
-      alert('❌ Failed to send message. Please try again later.');
+      alert(' Failed to send message. Please try again later.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -87,7 +92,7 @@ export default function ContactPage() {
               onSubmit={handleSubmit(onSubmit)}
               className="bg-white w-full lg:w-3/5 p-8 rounded-2xl shadow-2xl border border-gray-200 min-h-[600px] flex flex-col justify-between"
             >
-              <h3 className="text-2xl text-[#5C748E] font-bold mb-6"> Send Us a Message</h3>
+              <h3 className="text-2xl text-[#5C748E] font-bold mb-6">Send Us a Message</h3>
 
               <div className="grid gap-5 mb-6 flex-grow">
                 {/* Name */}
@@ -154,9 +159,40 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full bg-[#5C748E] text-white font-semibold py-3 rounded-lg hover:opacity-90 transition flex justify-center items-center gap-2 mt-auto"
+                disabled={isLoading}
+                className={`w-full bg-[#5C748E] text-white font-semibold py-3 rounded-lg transition flex justify-center items-center gap-2 mt-auto ${
+                  isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:opacity-90'
+                }`}
               >
-                <SendHorizontal /> Send Message
+                {isLoading ? (
+                  <>
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8H4z"
+                      />
+                    </svg>
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <SendHorizontal /> Send Message
+                  </>
+                )}
               </button>
             </form>
 
